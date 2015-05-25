@@ -824,7 +824,9 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
                     attr[key] = keys[key](val);
                 }
                 el.attr(attr);
-            }, easing);
+            }, easing,
+            /* use element's id as animation callback id*/
+            el.id);
         el.anims[anim.id] = anim;
         anim._attrs = attrs;
         anim._callback = callback;

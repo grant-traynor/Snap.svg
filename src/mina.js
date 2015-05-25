@@ -165,9 +165,9 @@ var mina = (function (eve) {
      o         update (function) calles setter with the right value of the animation
      o }
     \*/
-    mina = function (a, A, b, B, get, set, easing) {
+    mina = function (a, A, b, B, get, set, easing, elementId) {
         var anim = {
-            id: ID(),
+            id: elementId,
             start: a,
             end: A,
             b: b,

@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// build: 2015-04-13
+// build: 2015-05-16
 
 // Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
 // 
@@ -605,9 +605,9 @@ var mina = (function (eve) {
      o         update (function) calles setter with the right value of the animation
      o }
     \*/
-    mina = function (a, A, b, B, get, set, easing) {
+    mina = function (a, A, b, B, get, set, easing, elementId) {
         var anim = {
-            id: ID(),
+            id: elementId,
             start: a,
             end: A,
             b: b,
@@ -794,6 +794,7 @@ var mina = (function (eve) {
     window.mina = mina;
     return mina;
 })(typeof eve == "undefined" ? function () {} : eve);
+
 // Copyright (c) 2013 - 2015 Adobe Systems Incorporated. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -3473,16 +3474,20 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
                     attr[key] = keys[key](val);
                 }
                 el.attr(attr);
-            }, easing);
+            }, easing,
+            /* use element's id as animation callback id*/
+            el.id);
         el.anims[anim.id] = anim;
         anim._attrs = attrs;
         anim._callback = callback;
         eve("snap.animcreated." + el.id, anim);
         eve.once("mina.finish." + anim.id, function () {
+            eve.off("mina.*." + anim.id);
             delete el.anims[anim.id];
             callback && callback.call(el);
         });
         eve.once("mina.stop." + anim.id, function () {
+            eve.off("mina.*." + anim.id);
             delete el.anims[anim.id];
         });
         return el;
